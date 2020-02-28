@@ -19,6 +19,7 @@
         align-items: center;
         justify-content: space-between;
         background-color: #BC2C1A;
+        box-shadow: 0px 5px 5px 0px #CCCECA;
     }
 
     h2 {

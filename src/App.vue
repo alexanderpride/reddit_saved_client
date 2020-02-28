@@ -11,28 +11,69 @@
 <script>
 
 import Dashboard from "./components/Dashboard";
-import Homepage from './components/Homepage.vue'
+import Homepage from './components/Homepage.vue';
+import axios from 'axios';
 
 export default {
-  name: 'App',
-  components: {
-    Homepage,
-    Dashboard
-  },
-  data: function(){
-    return {
+    name: 'App',
+    components: {
+        Homepage,
+        Dashboard
+    },
+    data: function(){
+        return {
 
-    }
-  },
-  computed: {
-    isLoggedIn: function () {
+        }
+    },
+    computed: {
+        isLoggedIn: function () {
 
-      // Checks that there is a cookie that is the SessionID and that it is somewhere in the cookie string
-      let re = /(.*)(connect.sid=)(.*;?)/;
-      return re.test(document.cookie)
+            // Checks that there is a cookie that is the SessionID and that it is somewhere in the cookie string
+            let re = /(.*)(alive=)(.*;?)/;
+            return re.test(document.cookie)
 
-    }
-  }
+        }
+    },
+    methods: {
+        linkToReddit: function () {
+            let state = this.getUrlParameter('state');
+            let code = this.getUrlParameter('code');
+
+            if (state && code) {
+
+                axios.request({
+                  url: 'http://localhost:3000/users/link',
+                  method: 'post',
+                  withCredentials: true,
+                  data: {
+                    state: state,
+                    code: code
+                  }
+                }).then(function (response) {
+                    console.log('yay');
+                    console.log(response.cookie);
+                }).catch(function (error) {
+                    console.log(error)
+                })
+
+            } else {
+              console.log('not logged in yet');
+            }
+
+        },
+        getUrlParameter: function (name) {
+            // eslint-disable-next-line no-useless-escape
+            // Taken from https://davidwalsh.name/query-string-javascript
+            // eslint-disable-next-line no-useless-escape
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            let results = regex.exec(window.location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+    },
+    mounted: function () {
+        this.linkToReddit();
+        }
 }
 </script>
 

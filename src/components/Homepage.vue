@@ -14,18 +14,29 @@
 
 
 <script>
-    //import axios from 'axios'
+    import axios from 'axios'
 
     export default {
         name: "Homepage",
         data: function () {
             return {
-                authLink: 'http://localhost:3000/users/auth_link',
+
             }
         },
         methods: {
             link: function () {
-                window.location.href=this.authLink;
+                axios.get('http://localhost:3000/users/auth_link', {
+                    withCredentials: true
+                })
+                    .then(function (response) {
+                        console.log(document.cookie);
+                        console.log(response);
+                        return response
+                    }).then(function (response) {
+                        window.location.href = response.data['auth_link'];
+                    }).catch(function (error) {
+                        console.log(error)
+                    });
             }
         }
     }
