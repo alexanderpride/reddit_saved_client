@@ -3,14 +3,21 @@
         <p v-if="error">
             {{error}}
         </p>
-        <h3 v-for="item in items" v-bind:key="item">
-            {{item}}
-        </h3>
+        <div v-for="item in items" v-bind:key="item.id" class="items">
+            <div v-if="item.type === 'Comment'">
+                <Comment v-bind:item="item"></Comment>
+            </div>
+
+            <h3 v-else>
+                {{item}}
+            </h3>
+        </div>
     </div>
 </template>
 
 <script>
     import axios from 'axios';
+    import Comment from "@/components/Comment";
 
     export default {
         name: "SavedItem",
@@ -20,11 +27,16 @@
                 error: null
             }
         },
+        components: {
+          Comment
+        },
         methods: {
             getItems: function () {
-                axios.get('http://localhost:3000/content/').then(function (response) {
+                axios.get('http://localhost:3000/content/', {
+                    withCredentials: true
+                }).then((response) => {
                     this.items = response.data;
-                }).catch(function (error) {
+                }).catch((error) => {
                     this.error = error
                 })
             }
@@ -37,7 +49,15 @@
 
 <style scoped>
     div {
-        width: 100%;
+        /*width: 100%;*/
+    }
+
+    h3{
+        margin-bottom: 5px;
         background-color: green;
+    }
+
+    .items{
+        margin-bottom: 8px;
     }
 </style>

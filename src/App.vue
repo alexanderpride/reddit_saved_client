@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLoggedIn">
+  <div v-if="isLinked">
     <Dashboard></Dashboard>
   </div>
 
@@ -22,19 +22,11 @@ export default {
     },
     data: function(){
         return {
-
-        }
-    },
-    computed: {
-        isLoggedIn: function () {
-
-            // Checks that there is a cookie that is the SessionID and that it is somewhere in the cookie string
-            let re = /(.*)(alive=)(.*;?)/;
-            return re.test(document.cookie)
-
+            isLinked: false
         }
     },
     methods: {
+
         linkToReddit: function () {
             let state = this.getUrlParameter('state');
             let code = this.getUrlParameter('code');
@@ -49,17 +41,14 @@ export default {
                     state: state,
                     code: code
                   }
-                }).then(function (response) {
-                    console.log('yay');
-                    console.log(response.cookie);
-                }).catch(function (error) {
+                }).then((response) => {
+                    this.isLinked = response.status === 201;
+                }).catch((error) => {
                     console.log(error)
                 })
-
-            } else {
-              console.log('not logged in yet');
+            } else if (/(.*)(connect.sid=)(.*;?)/.test(document.cookie)){
+              this.isLinked = true;
             }
-
         },
         getUrlParameter: function (name) {
             // eslint-disable-next-line no-useless-escape
@@ -73,7 +62,7 @@ export default {
     },
     mounted: function () {
         this.linkToReddit();
-        }
+    }
 }
 </script>
 
@@ -99,4 +88,5 @@ export default {
     font-family: 'Roboto Slab', Avenir, Helvetica, Arial, sans-serif;
     color: #BC2C1A;
   }
+
 </style>

@@ -29,10 +29,6 @@
                     withCredentials: true
                 })
                     .then(function (response) {
-                        console.log(document.cookie);
-                        console.log(response);
-                        return response
-                    }).then(function (response) {
                         window.location.href = response.data['auth_link'];
                     }).catch(function (error) {
                         console.log(error)

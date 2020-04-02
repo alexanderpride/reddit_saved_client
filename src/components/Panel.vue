@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <form>
             <input type="text" v-model="searchTerm" placeholder="Search...">
             <label>Sort By</label>
@@ -43,8 +43,10 @@
 </script>
 
 <style scoped>
-    div {
+    .container {
         background-color: #5a5d60;
+        border-radius: 10px;
+        box-shadow: 0px 5px 5px 0px #CCCECA;
     }
 
     input[type=text] {

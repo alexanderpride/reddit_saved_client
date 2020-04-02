@@ -1,13 +1,18 @@
 <template>
-    <div>
-        <Header></Header>
+    <div class="background">
+
+        <Header class="header"></Header>
 
         <section>
-            <Panel class="panel"></Panel>
-            <div class="saved-container">
+            <div class="panel">
+                <Panel></Panel>
+            </div>
+
+            <div class="items">
                 <saved-item></saved-item>
             </div>
         </section>
+
     </div>
 </template>
 
@@ -27,20 +32,23 @@
 </script>
 
 <style scoped>
-    section {
+
+    section{
         display: flex;
-        flex-direction: row;
-        width: 100%;
     }
 
-    .panel {
-        flex: 0 1 40%;
+    .panel{
+        flex-grow: 1;
+        flex-shrink: 0;
+        flex-basis: 30%;
         margin: 1%;
-        border-radius: 3px;
     }
 
-    .saved-container {
-        flex: 1 1 auto;
-        margin: 1%;
+    .items{
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 66%;
+        margin-right: 1%;
     }
+
 </style>
